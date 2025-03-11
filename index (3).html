@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BSc Nursing Prep App</title>
+    <style>
+        /* Reset and base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            background-color: #f4f4f4;
+        }
+
+        /* Navigation styles */
+        nav {
+            background-color: rgba(44, 62, 80, 0.9); /* Semi-transparent background */
+            padding: 1rem;
+            text-align: center;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            margin: 0 0.5rem;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        nav a:hover {
+            background-color: #34495e;
+        }
+
+        nav a.active {
+            background-color: #1abc9c;
+        }
+
+        /* Page content styles */
+        .page {
+            display: none;
+            padding: 2rem;
+            margin-top: 60px; /* Offset for fixed nav */
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        /* Home page styles */
+        #home {
+            text-align: center;
+            padding: 150px 20px 100px;
+            background-image: url('https://via.placeholder.com/1920x1080/1abc9c/ffffff?text=Nursing+Background+1'); /* Replace with actual image URL */
+            background-size: cover;
+            background-position: center;
+            color: white;
+            position: relative;
+        }
+
+        #home::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5); /* Dark overlay for better text visibility */
+            z-index: 1;
+        }
+
+        #home h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            animation: fadeIn 2s ease-in-out;
+            position: relative;
+            z-index: 2;
+        }
+
+        #home p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto 2rem;
+            animation: fadeIn 3s ease-in-out;
+            position: relative;
+            z-index: 2;
+        }
+
+        .cta-buttons {
+            margin-top: 2rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .cta-buttons a {
+            display: inline-block;
+            background-color: #1abc9c;
+            color: white;
+            padding: 10px 20px;
+            margin: 0 10px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .cta-buttons a:hover {
+            background-color: #16a085;
+            transform: translateY(-5px);
+        }
+
+        .quote {
+            font-style: italic;
+            margin-top: 2rem;
+            font-size: 1.1rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .features {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            padding: 50px 20px;
+            background-color: white;
+        }
+
+        .feature {
+            text-align: center;
+            max-width: 300px;
+            margin: 20px;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+
+        .feature:hover {
+            transform: translateY(-10px);
+        }
+
+        .feature h3 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .feature p {
+            color: #34495e;
+        }
+
+        .feature-icon {
+            font-size: 2rem;
+            color: #1abc9c;
+            margin-bottom: 10px;
+        }
+
+        /* Notes page styles */
+        #notes {
+            padding: 20px;
+        }
+
+        .subject {
+            background: white;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .subject h3 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .subject ul {
+            list-style-type: none;
+        }
+
+        .subject ul li {
+            padding: 5px 0;
+        }
+
+        .subject ul li a {
+            color: #1abc9c;
+            text-decoration: none;
+        }
+
+        .subject ul li a:hover {
+            text-decoration: underline;
+        }
+
+        /* Test Series page styles */
+        #test-series {
+            padding: 20px;
+        }
+
+        .test {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .test h3 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .test p {
+            color: #34495e;
+        }
+
+        .test a {
+            display: inline-block;
+            background-color: #1abc9c;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .test a:hover {
+            background-color: #16a085;
+            transform: translateY(-5px);
+        }
+
+        /* Contact page styles */
+        #contact {
+            padding: 20px;
+        }
+
+        .contact-info {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .contact-info h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+
+        .contact-info p {
+            margin: 10px 0;
+            color: #34495e;
+        }
+
+        .contact-info a {
+            color: #1abc9c;
+            text-decoration: none;
+        }
+
+        .contact-info a:hover {
+            text-decoration: underline;
+        }
+
+        /* Payment page styles */
+        #payment {
+            padding: 20px;
+        }
+
+        .payment-section {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .payment-section h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+
+        .payment-section button {
+            background-color: #1abc9c;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .payment-section button:hover {
+            background-color: #16a085;
+            transform: translateY(-5px);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <a href="#home" class="active">Home</a>
+        <a href="#notes">Notes</a>
+        <a href="#test-series">Test Series</a>
+        <a href="#contact">Contact</a>
+        <a href="#payment">Payment</a>
+    </nav>
+
+    <!-- Home Page -->
+    <div id="home" class="page active">
+        <h1>Welcome to BSc Nursing Prep App</h1>
+        <p>
+            Your ultimate companion for BSc Nursing preparation. Access important notes, lectures, and test series to excel in your exams.
+        </p>
+        <div class="cta-buttons">
+            <a href="#notes">Explore Notes</a>
+            <a href="#test-series">Start Test Series</a>
+        </div>
+        <div class="quote">
+            "Nursing is not just an art, it has a heart. Care with compassion and excel with knowledge."
+        </div>
+    </div>
+
+    <!-- Features Section -->
+    <div class="features">
+        <div class="feature">
+            <div class="feature-icon">📚</div>
+            <h3>Comprehensive Notes</h3>
+            <p>Access detailed notes for all subjects, including Anatomy, Physiology, and Microbiology.</p>
+        </div>
+        <div class="feature">
+            <div class="feature-icon">📝</div>
+            <h3>Test Series</h3>
+            <p>Practice with 10+ sets of test series for each subject to boost your preparation.</p>
+        </div>
+        <div class="feature">
+            <div class="feature-icon">🎯</div>
+            <h3>Expert Guidance</h3>
+            <p>Get tips and guidance from experienced educators to ace your exams.</p>
+        </div>
+    </div>
+
+    <!-- Notes Page -->
+    <div id="notes" class="page">
+        <h2>Subject Notes</h2>
+
+        <!-- Anatomy Notes -->
+        <div class="subject">
+            <h3>Anatomy</h3>
+            <ul>
+                <li><a href="introduction-to-human-anatomy.html">Introduction to Human Anatomy</a></li>
+                <li><a href="#">Skeletal System Notes</a></li>
+                <li><a href="#">Muscular System Notes</a></li>
+                <li><a href="#">Nervous System Notes</a></li>
+                <li><a href="#">Cardiovascular System Notes</a></li>
+                <li><a href="#">Respiratory System Notes</a></li>
+            </ul>
+        </div>
+
+        <!-- Physiology Notes -->
+        <div class="subject">
+            <h3>Physiology</h3>
+            <ul>
+                <li><a href="blood-physiology.html">Blood Physiology Notes</a></li>
+                <li><a href="#">Cell Physiology Notes</a></li>
+                <li><a href="#">Cardiovascular Physiology Notes</a></li>
+                <li><a href="#">Respiratory Physiology Notes</a></li>
+                <li><a href="#">Renal Physiology Notes</a></li>
+                <li><a href="#">Endocrine Physiology Notes</a></li>
+            </ul>
+        </div>
+
+        <!-- Microbiology Notes -->
+        <div class="subject">
+            <h3>Microbiology</h3>
+            <ul>
+                <li><a href="#">Introduction to Microbiology</a></li>
+                <li><a href="#">Bacterial Structure Notes</a></li>
+                <li><a href="#">Virology Notes</a></li>
+                <li><a href="#">Immunology Notes</a></li>
+                <li><a href="#">Parasitology Notes</a></li>
+                <li><a href="#">Antimicrobial Agents Notes</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Test Series Page -->
+    <div id="test-series" class="page">
+        <h2>Test Series</h2>
+
+        <!-- Anatomy Test -->
+        <div class="test">
+            <h3>Anatomy Test Series</h3>
+            <p>10 sets of Anatomy test series to help you prepare effectively.</p>
+            <a href="anatomy-tests.html">Start Anatomy Test Series</a>
+        </div>
+
+        <!-- Physiology Test -->
+        <div class="test">
+            <h3>Physiology Test Series</h3>
+            <p>10 sets of Physiology test series to boost your preparation.</p>
+            <a href="#">Start Physiology Test Series</a>
+        </div>
+
+        <!-- Microbiology Test -->
+        <div class="test">
+            <h3>Microbiology Test Series</h3>
+            <p>10 sets of Microbiology test series to ace your exams.</p>
+            <a href="#">Start Microbiology Test Series</a>
+        </div>
+    </div>
+
+    <!-- Contact Page -->
+    <div id="contact" class="page">
+        <h2>Contact Us</h2>
+        <div class="contact-info">
+            <h3>Nirmal Bairwa</h3>
+            <p><strong>Mobile:</strong> <a href="tel:9509384840">9509384840</a></p>
+            <p><strong>Email:</strong> <a href="mailto:bairwanirmal524@gmail.com">bairwanirmal524@gmail.com</a></p>
+            <p><strong>Instagram:</strong> <a href="https://instagram.com/nirmal.ikt" target="_blank">@nirmal.ikt</a></p>
+        </div>
+    </div>
+
+    <!-- Payment Page -->
+    <div id="payment" class="page">
+        <div class="payment-section">
+            <h3>Unlock Premium Content</h3>
+            <p>Get access to exclusive notes, test series, and expert guidance by subscribing to our premium plan.</p>
+            <button id="rzp-button">Subscribe Now (₹499/month)</button>
+        </div>
+    </div>
+
+    <!-- Include Razorpay Checkout Script -->
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script>
+        // Handle navigation
+        function showPage(pageId) {
+            // Hide all pages
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+
+            // Show selected page
+            document.getElementById(pageId).classList.add('active');
+
+            // Update active navigation link
+            document.querySelectorAll('nav a').forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${pageId}`) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        // Event listeners for navigation
+        document.querySelectorAll('nav a').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const pageId = link.getAttribute('href').substring(1);
+                showPage(pageId);
+                window.location.hash = pageId;
+            });
+        });
+
+        // Handle initial page load with hash
+        function checkHash() {
+            const hash = window.location.hash.substring(1);
+            const validPages = ['home', 'notes', 'test-series', 'contact', 'payment'];
+            if (validPages.includes(hash)) {
+                showPage(hash);
+            } else {
+                showPage('home');
+            }
+        }
+
+        // Listen for hash changes
+        window.addEventListener('hashchange', checkHash);
+
+        // Initial page load
+        checkHash();
+
+        // Razorpay Payment Integration
+        document.getElementById('rzp-button').onclick = function (e) {
+            const options = {
+                key: "rzp_test_PvBazPTsDgfN9S", // Replace with your Razorpay Key ID
+                amount: 49900, // Amount in paise (₹499 = 49900 paise)
+                currency: "INR",
+                name: "BSc Nursing Prep App",
+                description: "Premium Subscription",
+                image: "https://via.placeholder.com/150/1abc9c/ffffff?text=Logo", // Add your logo URL
+                handler: function (response) {
+                    alert("Payment successful! Payment ID: " + response.razorpay_payment_id);
+                    // You can redirect the user or unlock premium content here
+                },
+                prefill: {
+                    name: "Nirmal Bairwa", // Prefill customer name
+                    email: "bairwanirmal524@gmail.com", // Prefill customer email
+                    contact: "9509384840", // Prefill customer phone number
+                },
+                theme: {
+                    color: "#1abc9c", // Customize the payment button color
+                },
+            };
+
+            const rzp = new Razorpay(options);
+            rzp.open();
+            e.preventDefault();
+        };
+    </script>
+</body>
+</html>
